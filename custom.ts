@@ -14,18 +14,20 @@ namespace OrientBit {
         lrot_cnt: number
         rrot_cnt: number
         rot_cnt: number[]
+        numSections: number
         
-        setup (lPort: DigitalPin, rPort: DigitalPin): void {
+        setup (lPort: DigitalPin, rPort: DigitalPin, nSect: number): void {
             if(!this.is_enabled) {
                 this.resetCnt()
                 pins.setPull(lPort, PinPullMode.PullUp)
                 pins.setPull(rPort, PinPullMode.PullUp)
+                this.numSections = nSect
                 this.is_enabled = true
             }
         }
 
         getCnt(): number[] {
-            this.rot_cnt = [this.lrot_cnt, this.rrot_cnt]
+            this.rot_cnt = [this.lrot_cnt, this.lpulse_cnt, this.rrot_cnt, this.rpulse_cnt]
             return this.rot_cnt
         }
 
@@ -48,16 +50,22 @@ namespace OrientBit {
     let rPort: DigitalPin
 
     /**
-    * Count the number of times the wheel encoder pulses
-    * This function returns an array of 2 numbers which are speeds for left and right motor
-    */
-    
+    * Reset the wheel encoder counter
+    */    
     //% block="reset wheel rotation count"
     //% group="Wheel Encoder"
     export function resetWheelRotCnt (): void {
         _wheelEnc.resetCnt()
     }
 
+    /**
+    * Count the number of pulses from the wheel encoder - direction ignored
+    * Enable before getting count
+    * This function returns an array of 4 numbers which are:
+    * left rotation count, left pulse count
+    * right rotation count and right pulse count
+    * The pulse count is the number of pulses before next full rotation is completed
+    */ 
     //% block="get wheel rotation count"
     //% group="Wheel Encoder"
     export function getRotationCount (): number[] {
@@ -65,23 +73,29 @@ namespace OrientBit {
  
     }
 
+    /**
+    * Disables the encoders - ports can be used for other functions
+    */ 
     //% block="disable encoders"
     //% group="Wheel Encoder"    
     export function disableEncoders ():void {
         _wheelEnc.disableEncoder()
     }
 
-    //% block="enable encoder %DigitalPin %DigitalPin"
+    /**
+    * Ports are now dedicated for encoder when enabled
+    */ 
+    //% block="enable encoder with %sections on port %DigitalPin & %DigitalPin"
     //% group="Wheel Encoder"    
-    export function enableEncoder (lport: DigitalPin, rport: DigitalPin):void {
-        _wheelEnc.setup(lport, rport)
+    export function enableEncoder (lport: DigitalPin, rport: DigitalPin, sections: number):void {
+        _wheelEnc.setup(lport, rport, sections)
     }
 
     pins.onPulsed(rPort, PulseValue.High, function rCntr() {
         if(_wheelEnc.is_enabled ){
             _wheelEnc.rpulse_cnt++
             
-            if (_wheelEnc.rpulse_cnt >= 8) {
+            if (_wheelEnc.rpulse_cnt >= _wheelEnc.numSections) {
                 _wheelEnc.rpulse_cnt = 0
                 _wheelEnc.rrot_cnt++
             }
@@ -92,7 +106,7 @@ namespace OrientBit {
         if(_wheelEnc.is_enabled ){
             _wheelEnc.lpulse_cnt++
         
-            if (_wheelEnc.lpulse_cnt >= 8) {
+            if (_wheelEnc.lpulse_cnt >= _wheelEnc.numSections) {
                 _wheelEnc.lpulse_cnt = 0
                 _wheelEnc.lrot_cnt++
             }
