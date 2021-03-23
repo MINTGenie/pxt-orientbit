@@ -85,7 +85,7 @@ namespace OrientBit {
     /**
     * Ports are now dedicated for encoder when enabled
     */ 
-    //% block="enable encoder with %sections on port %DigitalPin & %DigitalPin"
+    //% block="enable encoder on port %DigitalPin & %DigitalPin with %sections sections"
     //% group="Wheel Encoder"    
     export function enableEncoder (lport: DigitalPin, rport: DigitalPin, sections: number):void {
         _wheelEnc.setup(lport, rport, sections)
