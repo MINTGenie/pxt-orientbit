@@ -1,6 +1,10 @@
 
 > Open this page at [https://mintgenie.github.io/pxt-orientbit/](https://mintgenie.github.io/pxt-orientbit/)
 
+![image](https://user-images.githubusercontent.com/66748747/110723615-9e328580-8214-11eb-8e94-2296814e6245.png)
+
+Here is the OrientBit - used to change the orientation of MicroBit on certain Robots so that the built-in Compass can be used.
+
 ## Use as Extension
 
 This repository can be added as an **extension** in MakeCode.
