@@ -85,10 +85,10 @@ namespace OrientBit {
     * @param lPort pin connected to left, eg: DigitalPin.P1
     * @param rPort pin connected to right, eg: DigitalPin.P2
     */ 
-    //% block="enable encoder on port %DigitalPin & %DigitalPin with %sections sections"
+    //% block="enable encoder on port %lPort & %rPort with %sections sections"
     //% group="Wheel Encoder"
-    //% lPort.defl = DigitalPin.P1
-    //% rPort.defl = DigitalPin.P2
+    //% lPort.defl=DigitalPin.P1
+    //% rPort.defl=DigitalPin.P2
     export function enableEncoder (lPort: DigitalPin, rPort: DigitalPin, sections: number):void {
         _wheelEnc.setup(lPort, rPort, sections)
         pins.onPulsed(rPort, PulseValue.High, () => {
