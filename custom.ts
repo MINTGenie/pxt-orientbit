@@ -16,11 +16,11 @@ namespace OrientBit {
         rot_cnt: number[]
         numSections: number
         
-        setup (lPort: DigitalPin, rPort: DigitalPin, nSect: number): void {
+        setup (lprt: DigitalPin, rprt: DigitalPin, nSect: number): void {
             if(!this.is_enabled) {
                 this.resetCnt()
-                pins.setPull(lPort, PinPullMode.PullUp)
-                pins.setPull(rPort, PinPullMode.PullUp)
+                pins.setPull(lprt, PinPullMode.PullUp)
+                pins.setPull(rprt, PinPullMode.PullUp)
                 this.numSections = nSect
                 this.is_enabled = true
             }
@@ -46,8 +46,6 @@ namespace OrientBit {
     };
 
     let _wheelEnc: wheelEnc = new wheelEnc()
-    let lPort: DigitalPin
-    let rPort: DigitalPin
 
     /**
     * Reset the wheel encoder counter
@@ -84,34 +82,37 @@ namespace OrientBit {
 
     /**
     * Ports are now dedicated for encoder when enabled
+    * @param lPort pin connected to left, eg: DigitalPin.P1
+    * @param rPort pin connected to right, eg: DigitalPin.P2
     */ 
     //% block="enable encoder on port %DigitalPin & %DigitalPin with %sections sections"
-    //% group="Wheel Encoder"    
-    export function enableEncoder (lport: DigitalPin, rport: DigitalPin, sections: number):void {
-        _wheelEnc.setup(lport, rport, sections)
-    }
-
-    pins.onPulsed(rPort, PulseValue.High, function rCntr() {
-        if(_wheelEnc.is_enabled ){
-            _wheelEnc.rpulse_cnt++
-            
-            if (_wheelEnc.rpulse_cnt >= _wheelEnc.numSections) {
-                _wheelEnc.rpulse_cnt = 0
-                _wheelEnc.rrot_cnt++
+    //% group="Wheel Encoder"
+    //% lPort.defl = DigitalPin.P1
+    //% rPort.defl = DigitalPin.P2
+    export function enableEncoder (lPort: DigitalPin, rPort: DigitalPin, sections: number):void {
+        _wheelEnc.setup(lPort, rPort, sections)
+        pins.onPulsed(rPort, PulseValue.High, () => {
+            if(_wheelEnc.is_enabled ){
+                _wheelEnc.rpulse_cnt += 1
+                
+                if (_wheelEnc.rpulse_cnt >= _wheelEnc.numSections) {
+                    _wheelEnc.rpulse_cnt = 0
+                    _wheelEnc.rrot_cnt += 1
+                }
             }
-        }
-    })
-    
-    pins.onPulsed(lPort, PulseValue.High, function lCntr() {
-        if(_wheelEnc.is_enabled ){
-            _wheelEnc.lpulse_cnt++
+        });
         
-            if (_wheelEnc.lpulse_cnt >= _wheelEnc.numSections) {
-                _wheelEnc.lpulse_cnt = 0
-                _wheelEnc.lrot_cnt++
+        pins.onPulsed(lPort, PulseValue.High, () => {
+            if(_wheelEnc.is_enabled ){
+                _wheelEnc.lpulse_cnt += 1
+            
+                if (_wheelEnc.lpulse_cnt >= _wheelEnc.numSections) {
+                    _wheelEnc.lpulse_cnt = 0
+                    _wheelEnc.lrot_cnt += 1
+                }
             }
-        }
-    })
+        });
+    }
 
     /**
     * Orient in the direction of the value specified and move forward..
