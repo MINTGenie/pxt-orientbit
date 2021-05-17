@@ -7,7 +7,7 @@
 Here is the OrientBit - used to change the orientation of MicroBit on certain Robots so that the built-in Compass can be used.
 It can also be used to add a I2C OLED Display (SSD1306), 2 Wheel encoders, a TCS34725 color sensor and MPU9250 IMU.
 
-Use this extension along with [https://github.com/fizban99/microbit_ssd1306] for OLED
+Use this extension along with [https://github.com/fizban99/microbit_ssd1306](https://github.com/fizban99/microbit_ssd1306) for OLED
 
 Here is an example implementation of reading out the Number of Rotations of wheel from the Encoder and displaying it on the
 OLED Display:
