@@ -2,6 +2,7 @@
 > Open this page at [https://mintgenie.github.io/pxt-orientbit/](https://mintgenie.github.io/pxt-orientbit/)
 
 ![image](https://user-images.githubusercontent.com/66748747/110723615-9e328580-8214-11eb-8e94-2296814e6245.png)
+![image](https://user-images.githubusercontent.com/66748747/118565288-377c9b80-b772-11eb-8f18-6f28a4b105be.png)
 
 Here is the OrientBit - used to change the orientation of MicroBit on certain Robots so that the built-in Compass can be used.
 It can also be used to add a I2C OLED Display (SSD1306), 2 Wheel encoders, a TCS34725 color sensor and MPU9250 IMU.
