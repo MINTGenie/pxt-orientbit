@@ -31,6 +31,14 @@ namespace OrientBit {
             return this.rot_cnt
         }
 
+        getLPulseCnt(): number {
+            return (this.lrot_cnt * 16) + this.lpulse_cnt
+        }
+
+        getRPulseCnt(): number {
+            return (this.rrot_cnt * 16) + this.rpulse_cnt
+        }
+
         resetCnt(): void {
             this.lrot_cnt = 0
             this.rrot_cnt = 0
@@ -55,6 +63,29 @@ namespace OrientBit {
     export function resetWheelRotCnt (): void {
         _wheelEnc.resetCnt()
     }
+
+    /**
+    * Count the number of pulses from the wheel encoder - direction ignored
+    * Enable before getting count
+    * This function returns the total left pulse count
+    */ 
+    //% block="get left pulse counts"
+    //% group="Wheel Encoder"
+    export function getLeftPulseCount (): number {
+        return _wheelEnc.getLPulseCnt() 
+    }
+
+    /**
+    * Count the number of pulses from the wheel encoder - direction ignored
+    * Enable before getting count
+    * This function returns the total right pulse count
+    */ 
+    //% block="get right pulse counts"
+    //% group="Wheel Encoder"
+    export function getRightPulseCount (): number {
+        return _wheelEnc.getRPulseCnt() 
+    }
+
 
     /**
     * Count the number of pulses from the wheel encoder - direction ignored
