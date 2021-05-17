@@ -9,10 +9,16 @@ It can also be used to add a I2C OLED Display (SSD1306), 2 Wheel encoders, a TCS
 
 Use this extension along with [https://github.com/fizban99/microbit_ssd1306](https://github.com/fizban99/microbit_ssd1306) for OLED
 
-Here is an example implementation of reading out the Number of Rotations of wheel from the Encoder and displaying it on the
-OLED Display:
-![image](https://user-images.githubusercontent.com/66748747/118565075-d6ed5e80-b771-11eb-8672-9f8f9566ecde.png)
+Usage Example 1:
+    Here is an example implementation of reading out the Number of Rotations of wheel from the Encoder and displaying it on the
+    OLED Display -
+    ![image](https://user-images.githubusercontent.com/66748747/118565075-d6ed5e80-b771-11eb-8672-9f8f9566ecde.png)
 
+Usage Example 2:
+    Here is an example of using the Maqueen extension and with the onboard Compass to orient the Maqueen to a particular direction -
+    ![image](https://user-images.githubusercontent.com/66748747/118570149-d063e480-b77b-11eb-851e-4766f541ea60.png)
+    link: [https://makecode.microbit.org/_fuP0f2UTicXt](https://makecode.microbit.org/_fuP0f2UTicXt)
+    The course correct block returns 2 values as an array which are each the speeds of left and right motors.
 
 ## Use as Extension
 
