@@ -70,6 +70,7 @@ namespace OrientBit {
     * This function returns the total left pulse count
     */ 
     //% block="get left pulse counts"
+    //% help="get the total number of pulses on Left since reset"
     //% group="Wheel Encoder"
     export function getLeftPulseCount (): number {
         return _wheelEnc.getLPulseCnt() 
@@ -81,6 +82,7 @@ namespace OrientBit {
     * This function returns the total right pulse count
     */ 
     //% block="get right pulse counts"
+    //% help="get the total number of pulses on right since reset"
     //% group="Wheel Encoder"
     export function getRightPulseCount (): number {
         return _wheelEnc.getRPulseCnt() 
@@ -95,7 +97,8 @@ namespace OrientBit {
     * right rotation count and right pulse count
     * The pulse count is the number of pulses before next full rotation is completed
     */ 
-    //% block="get wheel rotation count"
+    //% block="get wheel rotation count"    
+    //% help="returns an array containing the number of rotations and remaining pulses on both Left and Right since reset"
     //% group="Wheel Encoder"
     export function getRotationCount (): number[] {
         return _wheelEnc.getCnt()
@@ -106,6 +109,7 @@ namespace OrientBit {
     * Disables the encoders - ports can be used for other functions
     */ 
     //% block="disable encoders"
+    //% help="ports used for encoders can now be used for other sensors - disconnect cable"
     //% group="Wheel Encoder"    
     export function disableEncoders ():void {
         _wheelEnc.disableEncoder()
@@ -121,6 +125,7 @@ namespace OrientBit {
     //% lPort.defl=DigitalPin.P0
     //% rPort.defl=DigitalPin.P1
     //% sections.defl=16
+    //% help="Enables the wheel encoders on left and right with the number of white sections on the disc"
     export function enableEncoder (lPort: DigitalPin, rPort: DigitalPin, sections: number):void {
         _wheelEnc.setup(lPort, rPort, sections)
         pins.onPulsed(rPort, PulseValue.High, () => {
@@ -157,6 +162,7 @@ namespace OrientBit {
     //% preferred_heading.defl=90
     //% fwd_speed.min=28 fwd_speed.max=100
     //% fwd_speed.defl=35
+    //% help="returns an array of 2 numbers which are speeds for left and right motor and then keeps moving forward"
 
     export function course_correct (preferred_heading: number, fwd_speed: number): number[] {
         big_diff_speed = 30
@@ -277,6 +283,7 @@ namespace OrientBit {
     //% blockId=MINTGenieBit_get_regVal
     //% block="get Reg Val at %regAddr"
     //% group="MPU9250 IMU"
+    //% help="Reads and returns the register value at the address"
     //% subcategory="Expert"
     export function getVal(regAddr: number): number {
         return (_mpu9250.getRegAddr(regAddr))
@@ -285,6 +292,7 @@ namespace OrientBit {
     //% blockId=MINTGenieBit_get_identity
     //% block="get ident"
     //% group="MPU9250 IMU"
+    //% help="returns the identity"
     export function getident(): number {
         return (_mpu9250.identify())
     }
@@ -367,6 +375,7 @@ namespace OrientBit {
      */
     //% blockId=MINTGenieBit_get_light_clear
     //% block="get light"
+    //% help="get level of light"
     //% group="Colour & Light"
     export function getLight(): number {
         return Math.round(_tcs34725.light())
@@ -377,6 +386,7 @@ namespace OrientBit {
      */
     //% blockId=MINTGenieBit_get_light_red
     //% block="get red"
+    //% help="get level of red color"
     //% group="Colour & Light"
     export function getRed(): number {
         return Math.round(_tcs34725.rgb()[0])
@@ -387,6 +397,7 @@ namespace OrientBit {
      */
     //% blockId=MINTGenieBit_get_light_green
     //% block="get green"
+    //% help="get level of green color"
     //% group="Colour & Light"
     export function getGreen(): number {
         return Math.round(_tcs34725.rgb()[1])
@@ -411,6 +422,7 @@ namespace OrientBit {
     //% blockId=MINTGenieBit_get_light_blue
     //% block="get blue"
     //% group="Colour & Light"
+    //% help="get level of blue color"
     export function getBlue(): number {
         return Math.round(_tcs34725.rgb()[2])
     }
