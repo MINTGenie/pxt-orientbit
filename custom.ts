@@ -39,11 +39,11 @@ namespace OrientBit {
         }
 
         getLDist(): number {
-            return ((this.lrot_cnt * 16) + this.lpulse_cnt) / this.circumf
+            return ((this.lrot_cnt * 16) + this.lpulse_cnt) * this.circumf /this.numSections
         }
 
         getRDist(): number {
-            return ((this.rrot_cnt * 16) + this.rpulse_cnt) / this.circumf
+            return ((this.rrot_cnt * 16) + this.rpulse_cnt) * this.circumf /this.numSections
         }
 
         getLPulseCnt(): number {
