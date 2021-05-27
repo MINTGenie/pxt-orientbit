@@ -7,6 +7,11 @@
 //% color="#4C97FF" icon="\uf0a4"
 //% groups="['Wheel Encoder', 'Navigate', 'Color & Light', ' MPU9250 IMU', 'SMBus']"
 namespace OrientBit {
+    export enum wheelSide {
+        left,
+        right
+    }
+
     class wheelEnc {
         is_enabled: boolean
         lpulse_cnt: number
@@ -15,20 +20,30 @@ namespace OrientBit {
         rrot_cnt: number
         rot_cnt: number[]
         numSections: number
+        circumf: number
         
-        setup (lprt: DigitalPin, rprt: DigitalPin, nSect: number): void {
+        setup (lprt: DigitalPin, rprt: DigitalPin, nSect: number, circ: number): void {
             if(!this.is_enabled) {
                 this.resetCnt()
                 pins.setPull(lprt, PinPullMode.PullUp)
                 pins.setPull(rprt, PinPullMode.PullUp)
                 this.numSections = nSect
                 this.is_enabled = true
+                this.circumf = circ
             }
         }
 
         getCnt(): number[] {
             this.rot_cnt = [this.lrot_cnt, this.lpulse_cnt, this.rrot_cnt, this.rpulse_cnt]
             return this.rot_cnt
+        }
+
+        getLDist(): number {
+            return ((this.lrot_cnt * 16) + this.lpulse_cnt) / this.circumf
+        }
+
+        getRDist(): number {
+            return ((this.rrot_cnt * 16) + this.rpulse_cnt) / this.circumf
         }
 
         getLPulseCnt(): number {
@@ -68,26 +83,33 @@ namespace OrientBit {
     * Count the number of pulses from the wheel encoder - direction ignored
     * Enable before getting count
     * This function returns the total left pulse count
-    */ 
-    //% block="get left pulse counts"
-    //% help="get the total number of pulses on Left since reset"
+    */
+    //% block="get $wheel encoder pulse counts"
+    //% help="get the total number of pulses on Left or Right since reset"
     //% group="Wheel Encoder"
-    export function getLeftPulseCount (): number {
-        return _wheelEnc.getLPulseCnt() 
+    export function getwheelPulseCount (wheel: wheelSide): number {
+        if(wheel == 0 ) {
+            return _wheelEnc.getLPulseCnt()
+        } else {
+            return _wheelEnc.getRPulseCnt()
+        }
     }
 
     /**
-    * Count the number of pulses from the wheel encoder - direction ignored
-    * Enable before getting count
-    * This function returns the total right pulse count
-    */ 
-    //% block="get right pulse counts"
-    //% help="get the total number of pulses on right since reset"
+    * Get the distance travelled by robot - direction ignored
+    * Enable before getting distance
+    * This function returns the total left/right distance travelled since reset
+    */
+    //% block="get $wheel wheel distance travelled"
+    //% help="get the total distance travelled by Left or Right wheel since reset"
     //% group="Wheel Encoder"
-    export function getRightPulseCount (): number {
-        return _wheelEnc.getRPulseCnt() 
+    export function getwheelDist (wheel: wheelSide): number {
+        if(wheel == 0 ) {
+            return _wheelEnc.getLDist()
+        } else {
+            return _wheelEnc.getRDist()
+        }
     }
-
 
     /**
     * Count the number of pulses from the wheel encoder - direction ignored
@@ -120,14 +142,15 @@ namespace OrientBit {
     * @param lPort pin connected to left, eg: DigitalPin.P1
     * @param rPort pin connected to right, eg: DigitalPin.P2
     */ 
-    //% block="enable encoder on port %lPort & %rPort with %sections sections"
+    //% block="setup encoder port %lPort %rPort sections %sections wheel circumference %circ cms"
     //% group="Wheel Encoder"
     //% lPort.defl=DigitalPin.P0
     //% rPort.defl=DigitalPin.P1
     //% sections.defl=16
+    //% circ.defl=14
     //% help="Enables the wheel encoders on left and right with the number of white sections on the disc"
-    export function enableEncoder (lPort: DigitalPin, rPort: DigitalPin, sections: number):void {
-        _wheelEnc.setup(lPort, rPort, sections)
+    export function enableEncoder (lPort: DigitalPin, rPort: DigitalPin, sections: number, circ: number):void {
+        _wheelEnc.setup(lPort, rPort, sections, circ)
         pins.onPulsed(rPort, PulseValue.High, () => {
             if(_wheelEnc.is_enabled ){
                 _wheelEnc.rpulse_cnt += 1
